@@ -6,6 +6,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func create_account(c *gin.Context) {
+	var jsonData struct {
+		id       string `json:"id" binding:"required"`
+		password string `json:"password" binding:"required"`
+	}
+	err := c.ShouldBindJSON(&jsonData)
+	if err != nil {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+	// logic for creating account
+
+	c.JSON(200, gin.H{
+		"message": "Account created",
+	})
+}
+
 func h_user_selection(c *gin.Context) {
 
 	var jasonData struct {
@@ -47,5 +64,6 @@ func main() {
 	router := gin.Default()
 	router.GET("/user-info", h_user_info)
 	router.POST("/user-selection", h_user_selection)
+	router.POST("/create-account", create_account)
 	router.Run() // listens on 0.0.0.0:8080 by default
 }
